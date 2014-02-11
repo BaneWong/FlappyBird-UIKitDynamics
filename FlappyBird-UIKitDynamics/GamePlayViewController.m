@@ -28,6 +28,8 @@ typedef enum {
 
 @property (nonatomic) GamePlayViewControllerMode mode;
 
+@property (nonatomic) NSInteger score;
+
 @property (strong, nonatomic) UIDynamicAnimator *dynamicAnimator;
 @property (strong, nonatomic) UIGravityBehavior *gravityBehavior;
 @property (strong, nonatomic) UIDynamicItemBehavior *flappyBirdItemBehavior;
@@ -68,7 +70,7 @@ typedef enum {
     __weak GamePlayViewController *weakSelf = self;
     self.gravityBehavior.action = ^{
         CGPoint velocity = [weakSelf.flappyBirdItemBehavior linearVelocityForItem:weakSelf.flappyBirdView];
-        CGFloat angle = velocity.y / 30.0f * M_PI / 180.0f;
+        CGFloat angle = velocity.y / 20.0f * M_PI / 180.0f;
         weakSelf.flappyBirdView.transform = CGAffineTransformMakeRotation(MIN(MAX(angle, minAngle), maxAngle));
     };
     
@@ -109,9 +111,8 @@ typedef enum {
     if (mode == GamePlayViewControllerModeGetReady) {
         [self shakeFlappyBird];
         self.statusLabel.text = @"Get Ready";
-        self.statusLabel.hidden = NO;
     } else if (mode == GamePlayViewControllerInFlight) {
-        self.statusLabel.hidden = YES;
+        self.statusLabel.text = @"";
         
         [self.gravityBehavior addItem:self.flappyBirdView];
         [self.flappyBirdItemBehavior addLinearVelocity:TOUCH_VELOCITY forItem:self.flappyBirdView];
@@ -127,7 +128,6 @@ typedef enum {
         [self.dynamicAnimator removeBehavior:self.unmovableItemBehavior];
         [self.dynamicAnimator removeBehavior:self.collisionBehavior];
         
-        self.statusLabel.hidden = NO;
         self.statusLabel.text = @"Game Over";
         self.okButton.hidden = NO;
         
@@ -189,6 +189,7 @@ typedef enum {
     [self.dynamicAnimator addBehavior:pipeTopAttachment];
     [self.dynamicAnimator addBehavior:pipeBottomAttachment];
     
+    __block CGFloat previousPipeX = CGRectGetMinX(pipeTopView.frame);
     [self interpolateValueFrom:pipeTopView.center.x to:-CGRectGetWidth(pipeTopView.bounds)/2.0f currentTime:0.0 endTime:3.0 frameBlock:^(CGFloat interpolatedValue, BOOL *stop) {
         CGPoint anchorPoint = pipeTopAttachment.anchorPoint;
         anchorPoint.x = interpolatedValue;
@@ -197,6 +198,13 @@ typedef enum {
         anchorPoint = pipeBottomAttachment.anchorPoint;
         anchorPoint.x = interpolatedValue;
         pipeBottomAttachment.anchorPoint = anchorPoint;
+        
+        if (CGRectGetMinX(pipeTopView.frame) < CGRectGetMinX(self.flappyBirdView.frame) &&
+            previousPipeX > CGRectGetMinX(self.flappyBirdView.frame)) {
+            self.score++;
+            self.statusLabel.text = [NSString stringWithFormat:@"%d", self.score];
+        }
+        previousPipeX = CGRectGetMinX(pipeTopView.frame);
         
         if (self.mode != GamePlayViewControllerInFlight) {
             *stop = YES;
