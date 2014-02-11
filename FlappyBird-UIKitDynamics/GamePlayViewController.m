@@ -63,6 +63,15 @@ typedef enum {
     self.collisionBehavior.collisionDelegate = self;
     [self.dynamicAnimator addBehavior:self.collisionBehavior];
     
+    CGFloat minAngle = -90.0f * M_PI / 180.0f;
+    CGFloat maxAngle = 90.0f * M_PI / 180.0f;
+    __weak GamePlayViewController *weakSelf = self;
+    self.gravityBehavior.action = ^{
+        CGPoint velocity = [weakSelf.flappyBirdItemBehavior linearVelocityForItem:weakSelf.flappyBirdView];
+        CGFloat angle = velocity.y / 30.0f * M_PI / 180.0f;
+        weakSelf.flappyBirdView.transform = CGAffineTransformMakeRotation(MIN(MAX(angle, minAngle), maxAngle));
+    };
+    
     self.mode = GamePlayViewControllerModeGetReady;
 }
 
