@@ -11,13 +11,13 @@
 #define ARC4RANDOM_MAX 0x100000000
 #define TOUCH_VELOCITY CGPointMake(0.0f, -425.0f)
 #define PIPE_Y_INSET_MIN 90
-#define PIPE_GAP_HEIGHT 120.0f
+#define PIPE_GAP_HEIGHT 140.0f
 
-typedef enum {
+typedef NS_ENUM(NSInteger, GamePlayViewControllerMode) {
     GamePlayViewControllerModeGetReady,
     GamePlayViewControllerInFlight,
     GamePlayViewControllerGameOver
-} GamePlayViewControllerMode;
+};
 
 @interface GamePlayViewController () <UICollisionBehaviorDelegate>
 
@@ -49,7 +49,7 @@ typedef enum {
     self.dynamicAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
     
     self.gravityBehavior = [[UIGravityBehavior alloc] init];
-    self.gravityBehavior.magnitude = 1.25f;
+    self.gravityBehavior.magnitude = 1.0f;
     [self.dynamicAnimator addBehavior:self.gravityBehavior];
     
     self.flappyBirdItemBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.flappyBirdView]];
@@ -239,7 +239,7 @@ typedef enum {
         double delayInSeconds = 1.0 / 30.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self interpolateValueFrom:from to:to currentTime:currentTime+1.0/30.0 endTime:endTime frameBlock:frameBlock completionBlock:completionBlock];
+            [self interpolateValueFrom:from to:to currentTime:currentTime+delayInSeconds endTime:endTime frameBlock:frameBlock completionBlock:completionBlock];
         });
     } else {
         completionBlock();
