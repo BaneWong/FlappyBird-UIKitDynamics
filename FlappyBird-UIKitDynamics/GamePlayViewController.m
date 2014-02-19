@@ -246,9 +246,14 @@ typedef NS_ENUM(NSInteger, GamePlayViewControllerMode) {
     }
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self didTapView];
+}
+
 #pragma mark - Action methods
 
-- (IBAction)didTapView:(id)sender
+- (void)didTapView
 {
     if (self.mode == GamePlayViewControllerModeGetReady) {
         self.mode = GamePlayViewControllerInFlight;

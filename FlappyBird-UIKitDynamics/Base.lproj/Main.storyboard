@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -111,9 +111,6 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="OpE-AF-WcR" appends="YES" id="CR7-GI-0Mn"/>
-                        </connections>
                     </view>
                     <connections>
                         <outlet property="flappyBirdView" destination="1g5-TM-VBB" id="r4f-TM-LpF"/>
@@ -123,11 +120,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FYo-6I-1V0" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="OpE-AF-WcR">
-                    <connections>
-                        <action selector="didTapView:" destination="vyG-RX-beN" id="hc4-gY-cjE"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="678" y="393"/>
         </scene>
